@@ -15,7 +15,6 @@ RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt i
     locales \
     curl \
     libsodium-dev \
-    libapache2-mod-php \
   && docker-php-ext-install pdo_mysql mbstring zip pcntl sodium exif gd xml imagick \
   && chown -R www-data:www-data /var/www/atrocore/ 
 
