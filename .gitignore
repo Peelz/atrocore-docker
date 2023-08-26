@@ -1,2 +1,4 @@
 mysql/data/
 .env
+
+atrocore/data
