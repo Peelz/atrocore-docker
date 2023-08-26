@@ -9,13 +9,14 @@ services:
       MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
     volumes:
       - ./mysql/data:/var/lib/mysql
+      - ./mysql/initdb:/docker-entrypoint-initdb.d
     ports:
       - '${MYSQL_PORT}:3306'
   atrocore:
     build: .
     volumes:
       # - './apache/sites-available/localhost.conf:/etc/apache2/sites-available/localhost.conf'
-      - './php/apache2/php.ini:/etc/php/7.4/apache2/php.ini'
+      - './atrocore/php/php.ini:/usr/local/etc/php/conf.d/custom.ini'
     depends_on:
       - mysql
     ports:
