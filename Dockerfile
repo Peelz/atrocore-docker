@@ -1,10 +1,10 @@
 FROM php:7.4-apache-bullseye
 
-WORKDIR /var/www/atrocore
+WORKDIR /var/www/html
 
 ENV COMPOSER_HOME=/.composer
 
-COPY ./skeleton-pim-no-demo/ /var/www/atrocore/
+COPY ./atrocore/composer.* /var/www/html/
 
 # Create system user to run Composer and Artisan Commands
 RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt install -y \
@@ -21,14 +21,13 @@ RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt i
   && pecl install imagick \
   && docker-php-ext-install pdo_mysql mbstring zip pcntl sodium exif gd xml \
   && docker-php-ext-enable imagick \
-  && chown -R www-data:www-data /var/www/atrocore/ \
-  && chmod -R 777 /var/www/atrocore
+  && php composer.phar self-update && php composer.phar update \
+  && find . -type d -exec chmod 755 {} + \
+  && find . -type f -exec chmod 644 {} + \
+  && find client data custom upload -type d -exec chmod 775 {} + \
+  && find client data custom upload -type f -exec chmod 664 {} + \
+  && chown -R www-data:www-data /var/www/html \
+  && chmod -R 777 /var/www/html
 
-USER 1000
-
-RUN php composer.phar self-update && php composer.phar update \
-  && find . -type d -exec chmod 755 {} \; \
-  && find . -type f -exec chmod 644 {} \; \
-  && find client data custom upload -type d -exec chmod 775 {} \; \
-  && find client data custom upload -type f -exec chmod 664 {} \; 
+EXPOSE 80
 

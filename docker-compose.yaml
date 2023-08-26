@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql:
-    image: mysql:8.0-debian
+    image: mysql:5
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: '${MYSQL_DATABASE}'
@@ -14,7 +14,16 @@ services:
   atrocore:
     build: .
     volumes:
-      - './apache/sites-available:/etc/apache2/sites-available'
+      # - './apache/sites-available/localhost.conf:/etc/apache2/sites-available/localhost.conf'
       - './php/apache2/php.ini:/etc/php/7.4/apache2/php.ini'
+    depends_on:
+      - mysql
+    ports:
+      - '${APP_PORT}:80'
+    command: >
+      bash -c "
+        a2enmod rewrite &&
+        apache2-foreground
+      "
     # volumes: 
     #   - astrocore:/var/www/astrocore
