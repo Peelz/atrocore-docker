@@ -1,16 +1,32 @@
 FROM php:7.4-apache-bullseye
 
-COPY ./atrocore/composer.json /var/www/atrocore/
-
 WORKDIR /var/www/atrocore
 
-RUN apt-get update && apt install -y libmcrypt-dev\
-  && docker-php-ext-install pdo pdo_mysql curl gd mbstring xml zip \
-  && docker-php-ext-enable mcrypt imagick \
-  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=compose \
-  && composer self-update && composer update \
-  && chown -R www-data:www-data /var/www/atrocore/ \
-  && a2enmod rewrite
-  # && find . -type d -exec chmod 755 {} + && find . -type f -exec chmod 644 {} +; \
-  # && find client data custom upload -type d -exec chmod 775 {} + && find client data custom upload -type f -exec chmod 664 {} + 
+COPY ./skeleton-pim-no-demo/ /var/www/atrocore/
+
+# Get latest Composer
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Create system user to run Composer and Artisan Commands
+RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt install -y \
+    git \
+    libonig-dev \
+    libzip-dev \
+    zlib1g-dev \
+    zip unzip \
+    build-essential \
+    locales \
+    curl \
+    libsodium \
+  && docker-php-ext-install pdo_mysql mbstring zip pcntl sodium \
+  && docker-php-ext-enable zip pdo_mysql sodiump cntl \
+  && chown -R www-data:www-data /var/www/atrocore/ 
+
+USER 1000
+
+RUN php composer.phar self-update && php composer.phar update \
+  && find . -type d -exec chmod 755 {} \; \
+  && find . -type f -exec chmod 644 {} \; \
+  && find client data custom upload -type d -exec chmod 775 {} \; \
+  && find client data custom upload -type f -exec chmod 664 {} \; 
 
