@@ -2,6 +2,8 @@ FROM php:7.4-apache-bullseye
 
 WORKDIR /var/www/atrocore
 
+ENV COMPOSER_HOME=/.composer
+
 COPY ./skeleton-pim-no-demo/ /var/www/atrocore/
 
 # Create system user to run Composer and Artisan Commands
@@ -15,8 +17,12 @@ RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt i
     locales \
     curl \
     libsodium-dev \
-  && docker-php-ext-install pdo_mysql mbstring zip pcntl sodium exif gd xml imagick \
-  && chown -R www-data:www-data /var/www/atrocore/ 
+    libmagickwand-dev \
+  && pecl install imagick \
+  && docker-php-ext-install pdo_mysql mbstring zip pcntl sodium exif gd xml \
+  && docker-php-ext-enable imagick \
+  && chown -R www-data:www-data /var/www/atrocore/ \
+  && chmod -R 777 /var/www/atrocore
 
 USER 1000
 
