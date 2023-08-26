@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0-debian
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    ports:
+      - '${MYSQL_PORT}:3306'
+  atrocore:
+    build: .
+    # volumes: 
+    #   - astrocore:/var/www/astrocore

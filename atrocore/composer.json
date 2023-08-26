@@ -1,0 +1,13 @@
+{
+  "name": "atrocore/skeleton-pim-no-demo",
+  "description": "Skeleton for AtroPIM",
+  "homepage": "https://atropim.com",
+  "minimum-stability": "stable",
+  "require": {
+    "atrocore/core": "*",
+    "atrocore/pim": "*",
+    "atrocore/dam": "*",
+    "atrocore/export-feeds": "*",
+    "atrocore/import-feeds": "*"
+  }
+}
