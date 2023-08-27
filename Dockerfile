@@ -6,7 +6,6 @@ ENV COMPOSER_HOME=/.composer
 
 COPY ./atrocore/composer.* /var/www/html/
 
-# Create system user to run Composer and Artisan Commands
 RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt install -y \
     git \
     libonig-dev \
@@ -28,6 +27,4 @@ RUN mkdir /.composer && chown -R 1000:1000 /.composer && apt-get update && apt i
   && find client data custom upload -type f -exec chmod 664 {} + \
   && chown -R www-data:www-data /var/www/html \
   && chmod -R 777 /var/www/html
-
-EXPOSE 80
 
