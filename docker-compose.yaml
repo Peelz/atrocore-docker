@@ -15,7 +15,6 @@ services:
   atrocore:
     build: .
     volumes:
-      # - './apache/sites-available/localhost.conf:/etc/apache2/sites-available/localhost.conf'
       - './atrocore/php/php.ini:/usr/local/etc/php/conf.d/custom.ini'
     depends_on:
       - mysql
