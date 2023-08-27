@@ -25,7 +25,7 @@ services:
         a2enmod rewrite &&
         apache2-foreground
       "
-    # TOOD: mount app data
+    # TODO: mount app data
     # volumes: 
     #   - astrocore/data/upload:/var/www/html/upload
     #   - atrocore/data/data:/var/www/html/data
